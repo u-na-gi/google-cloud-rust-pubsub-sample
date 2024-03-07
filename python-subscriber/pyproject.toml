@@ -1,0 +1,31 @@
+[project]
+name = "python-subscriber"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "u-na-gi", email = "orcinusorca1758dv6932@gmail.com" }
+]
+dependencies = [
+    "google-cloud-pubsub>=2.20.1",
+    "ruff>=0.3.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/python_subscriber"]
+
+[tool.ruff]
+select = ["I", "N"]  # "I"はisort, "N"はpep8-naming
+ignore = ["E", "F"]  # "E"はpycodestyleのError, "F"はPyflakes

@@ -34,7 +34,7 @@ async fn run(config: ClientConfig) -> Result<(), Status> {
     let cancel2 = cancel.clone();
     tokio::spawn(async move {
         // Cancel after 10 seconds.
-        tokio::time::sleep(Duration::from_secs(10)).await;
+        tokio::time::sleep(Duration::from_secs(1000)).await;
         cancel2.cancel();
     });
 
@@ -58,6 +58,7 @@ async fn run(config: ClientConfig) -> Result<(), Status> {
 async fn main() {
     println!("Hello, world!");
     let config = ClientConfig::default().with_auth().await.unwrap();
+    println!("config.environment: {:?}", config.environment);
     // let client = Client::new(config).await.unwrap();
     let _ = run(config).await;
 }
