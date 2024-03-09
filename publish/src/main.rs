@@ -1,6 +1,8 @@
+use std::path;
+
 use google_cloud_gax::grpc::Status;
 use google_cloud_googleapis::pubsub::v1::PubsubMessage;
-use google_cloud_pubsub::client::{Client, ClientConfig};
+use google_cloud_pubsub::client::{Client, ClientConfig, google_cloud_auth};
 use google_cloud_pubsub::subscription::SubscriptionConfig;
 use google_cloud_pubsub::topic::TopicConfig;
 use tokio::task::JoinHandle;
@@ -57,9 +59,33 @@ async fn run(config: ClientConfig) -> Result<(), Status> {
 
 #[tokio::main]
 async fn main() {
-    let config = ClientConfig::default().with_auth().await.unwrap();
-    println!("project_id: {:?}", config.project_id);
+    // 相対パスじゃだめ
+    let mut path_buf = path::PathBuf::new();
+    path_buf.push("..");
+    path_buf.push("secret");
+    path_buf.push("crient.json");
+    let filepath_option = path_buf.to_str();
+    let filepath = match filepath_option {
+        Some(f) => f.to_string(),
+        None => "".to_string(),
+    };
+    // gcloud projects add-iam-policy-binding enja-ai-talk --member="user:dev@agoraxa.com" --role=roles/pubsub.admin
+    let credentials_file_result = google_cloud_auth::credentials::CredentialsFile::new_from_file(filepath).await;
+
+    let credentials_file = match credentials_file_result {
+        Ok(config) => config,
+        Err(e) => {
+            println!("{:?}", e);
+            return; 
+        },
+    };
+
+    
+    println!("project_id: {:?}", credentials_file.project_id);
+    let config = ClientConfig::default().with_credentials(credentials_file).await.unwrap();
     println!("config.environment: {:?}", config.environment);
     // let client = Client::new(config).await.unwrap();
     let _ = run(config).await;
+
+
 }

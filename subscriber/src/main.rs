@@ -57,6 +57,8 @@ async fn run(config: ClientConfig) -> Result<(), Status> {
 #[tokio::main]
 async fn main() {
     println!("Hello, world!");
+    // google_cloud_auth::credentials::CredentialsFile
+    
     let config = ClientConfig::default().with_auth().await.unwrap();
     println!("config.environment: {:?}", config.environment);
     // let client = Client::new(config).await.unwrap();

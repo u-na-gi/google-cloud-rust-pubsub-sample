@@ -53,6 +53,8 @@ pyasn1==0.5.1
     # via rsa
 pyasn1-modules==0.3.0
     # via google-auth
+python-dotenv==1.0.1
+    # via python-subscriber
 requests==2.31.0
     # via google-api-core
 rsa==4.9

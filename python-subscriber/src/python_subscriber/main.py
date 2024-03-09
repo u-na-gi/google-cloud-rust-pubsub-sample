@@ -19,6 +19,7 @@ def receive_messages(
     # timeout = 5.0
 
     subscriber = pubsub_v1.SubscriberClient()
+    subscriber.from_service_account_info()
     print("subscriber.api.endpoint: ", subscriber.api.api_endpoint)
 
     # The `subscription_path` method creates a fully qualified identifier
